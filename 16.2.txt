@@ -1,0 +1,74 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WindowsFormsApp1
+{
+
+    public partial class Form1 : Form
+    {
+        static double SafeDivision(double x, double y)
+        {
+            if (y == 0) {
+                throw new DivideByZeroException(); }
+
+            return x / y;
+        }
+        static double SafeSqrt(double x)
+        {
+            if (x < 0)
+            {
+                throw new NumberException("number less than 0 ");
+            }
+            return x;
+        }
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void btnSend_Click(object sender, EventArgs e)
+        {
+            double a = Convert.ToDouble(tbA.Text);
+            double b = Convert.ToDouble(tbB.Text);
+            double h = Convert.ToDouble(tbH.Text);
+            double y = 1;
+            for (double i = a; i <= b; i++)
+            {
+                try
+                {
+                    double divider = SafeSqrt(Math.Pow(i, 2) + 2 * i -5);
+                   y = SafeDivision((3 * i + 4), divider);//Math.Sqrt(SafeSqrt(Math.Pow(i,2)+2*i+1)));
+                    lbContainer.Items.Add( y);
+                }
+                catch (DivideByZeroException)
+                {
+                    lbContainer.Items.Add($"division by 0");
+                }
+                catch (NumberException ex)
+                {
+                    lbContainer.Items.Add($"not: { ex.Message}");
+                }
+
+                // y =(3*i+4)/
+
+            }
+
+        }
+        class NumberException : ArgumentException
+        {
+            public int Value { get; }
+            public NumberException(string message):base(message)
+            {
+               
+            }
+        }
+    }
+}
